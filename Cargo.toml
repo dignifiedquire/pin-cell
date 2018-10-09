@@ -2,5 +2,7 @@
 name = "pin-cell"
 version = "0.1.0"
 authors = ["Without Boats <boats@mozilla.com>"]
+license = "MIT"
+description = "A pin-safe cell"
 
 [dependencies]
