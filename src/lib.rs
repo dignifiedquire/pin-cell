@@ -1,6 +1,5 @@
 #![no_std]
 #![deny(warnings, missing_docs, missing_debug_implementations)]
-#![feature(pin, arbitrary_self_types)]
 //! This library defines the `PinCell` type, a pinning variant of the standard
 //! library's `RefCell`.
 //!
