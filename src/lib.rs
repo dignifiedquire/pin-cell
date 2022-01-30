@@ -13,14 +13,14 @@
 //! to use interior mutability with the knowledge that `T` will never actually
 //! be moved out of the `RefCell` that wraps it.
 
-mod pin_ref;
 mod pin_mut;
+mod pin_ref;
 
-use core::cell::{RefCell, Ref, RefMut, BorrowError, BorrowMutError};
+use core::cell::{BorrowError, BorrowMutError, Ref, RefCell, RefMut};
 use core::pin::Pin;
 
-pub use crate::pin_ref::PinRef;
 pub use crate::pin_mut::PinMut;
+pub use crate::pin_ref::PinRef;
 
 /// A mutable memory location with dynamically checked borrow rules
 ///
@@ -36,7 +36,9 @@ pub struct PinCell<T: ?Sized> {
 impl<T> PinCell<T> {
     /// Creates a new `PinCell` containing `value`.
     pub const fn new(value: T) -> PinCell<T> {
-        PinCell { inner: RefCell::new(value) }
+        PinCell {
+            inner: RefCell::new(value),
+        }
     }
 }
 
@@ -91,9 +93,7 @@ impl<T: ?Sized> PinCell<T> {
         //
         // see discussion on tracking issue #49150 about pin projection
         // invariants
-        let pin_ref_mut: Pin<RefMut<'a, T>> = unsafe {
-            Pin::new_unchecked(ref_mut)
-        };
+        let pin_ref_mut: Pin<RefMut<'a, T>> = unsafe { Pin::new_unchecked(ref_mut) };
 
         Ok(PinMut { inner: pin_ref_mut })
     }
@@ -127,9 +127,7 @@ impl<T: ?Sized> PinCell<T> {
         //
         // see discussion on tracking issue #49150 about pin projection
         // invariants
-        let pin_ref: Pin<Ref<'a, T>> = unsafe {
-            Pin::new_unchecked(r)
-        };
+        let pin_ref: Pin<Ref<'a, T>> = unsafe { Pin::new_unchecked(r) };
 
         Ok(PinRef { inner: pin_ref })
     }
@@ -145,7 +143,7 @@ impl<T: ?Sized> PinCell<T> {
     /// need for dynamic checks.
     ///
     /// However be cautious: this method expects self to be mutable, which is
-    /// generally not the case when using a `PinCell`. Take a look at the 
+    /// generally not the case when using a `PinCell`. Take a look at the
     /// `borrow_mut` method instead if self isn't mutable.
     ///
     /// Also, please be aware that this method is only for special
