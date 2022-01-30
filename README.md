@@ -1,3 +1,5 @@
+# `PinCell`
+
 This library defines the `PinCell` type, a pinning variant of the standard
 library's `RefCell`.
 
@@ -10,3 +12,10 @@ one cannot get a mutable reference into a `PinCell`, only a pinned mutable
 reference (`Pin<&mut T>`). This makes pin projection safe, allowing you
 to use interior mutability with the knowledge that `T` will never actually
 be moved out of the `RefCell` that wraps it.
+
+
+## License
+
+<sup>
+Licensed under <a href="LICENSE-MIT">MIT license</a>.
+</sup>
